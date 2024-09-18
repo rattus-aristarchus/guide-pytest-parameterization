@@ -12,8 +12,8 @@ def test_sum_loop():
         [-1, 1, 0],
         [0, 0, 0]
     ]
-    for term_0, term_1, sum in data:
-        assert term_0 + term_1 == sum
+    for x, y, ttl in data:
+        assert x + y == ttl
 
 
 data = [
@@ -23,6 +23,19 @@ data = [
 ]
 
 
-@pytest.mark.parametrize("term_0,term_1,sum", data)
-def test_sum_parameterized(term_0, term_1, sum):
-    assert term_0 + term_1 == sum
+@pytest.mark.parametrize("x,y,ttl", data)
+def test_sum_parameterized(x, y, ttl):
+    assert x + y == ttl
+
+
+@pytest.fixture(params=data)
+def sum_arguments(request):
+    return request.param[0], request.param[1], request.param[2]
+
+def test_sum_simple(sum_arguments):
+    x, y, ttl = sum_arguments
+    assert x + y == ttl
+
+def test_sum_keyword(sum_arguments):
+    x, y, ttl = sum_arguments
+    assert sum((x, y)) == ttl
